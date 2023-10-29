@@ -1,8 +1,6 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.kh-highlighted {
+  padding: 3px;
+  border-radius: 3px;
+  color: var(--kh-c);
+  background-color: var(--kh-bgc);
+}
