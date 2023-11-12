@@ -54,7 +54,9 @@ export class KeywordHighlighterPlugin extends Plugin {
   refreshEditorView(): void {
     const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
     // @ts-expect-error, not typed
-    const editorView = markdownView.editor.cm as EditorView;
-    editorView.setState(editorView.state);
+    const editorView = markdownView?.editor.cm as EditorView;
+    if (editorView) {
+      editorView.setState(editorView.state);
+    }
   }
 }
