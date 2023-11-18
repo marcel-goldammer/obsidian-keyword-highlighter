@@ -1,6 +1,6 @@
 import { MarkdownView, Plugin } from "obsidian";
 import { EditorView } from "@codemirror/view";
-import { KeywordStyle, keywordHighlighter } from "src/editor-extension";
+import { KeywordStyle, editorHighlighter } from "src/editor-extension";
 import { SettingTab } from "src/setting-tab";
 import { readerHighlighter } from "./reader-extension";
 
@@ -33,7 +33,7 @@ export class KeywordHighlighterPlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.loadSettings();
-    this.registerEditorExtension(keywordHighlighter);
+    this.registerEditorExtension(editorHighlighter);
     this.registerMarkdownPostProcessor(readerHighlighter);
 
     this.addSettingTab(new SettingTab(this.app, this));
