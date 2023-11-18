@@ -1,7 +1,8 @@
 import { MarkdownView, Plugin } from "obsidian";
 import { EditorView } from "@codemirror/view";
-import { KeywordStyle, keywordHighlighter } from "src/editor-extension";
+import { KeywordStyle, editorHighlighter } from "src/editor-extension";
 import { SettingTab } from "src/setting-tab";
+import { readerHighlighter } from "./reader-extension";
 
 interface PluginSettings {
   keywords: KeywordStyle[];
@@ -32,7 +33,8 @@ export class KeywordHighlighterPlugin extends Plugin {
 
   async onload(): Promise<void> {
     await this.loadSettings();
-    this.registerEditorExtension(keywordHighlighter);
+    this.registerEditorExtension(editorHighlighter);
+    this.registerMarkdownPostProcessor(readerHighlighter);
 
     this.addSettingTab(new SettingTab(this.app, this));
   }
@@ -43,16 +45,19 @@ export class KeywordHighlighterPlugin extends Plugin {
       DEFAULT_SETTINGS,
       await this.loadData()
     );
-    this.refreshEditorView();
+    this.refreshMarkdownView();
   }
 
   async saveSettings(): Promise<void> {
     await this.saveData(KeywordHighlighterPlugin.settings);
-    this.refreshEditorView();
+    this.refreshMarkdownView();
   }
 
-  refreshEditorView(): void {
+  refreshMarkdownView(): void {
     const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
+    // refresh reader mode
+    markdownView?.previewMode.rerender(true);
+    // refresh editor mode
     // @ts-expect-error, not typed
     const editorView = markdownView?.editor.cm as EditorView;
     if (editorView) {

@@ -13,7 +13,7 @@ import { KeywordHighlighterPlugin } from "src/keyword-highlighter-plugin";
 
 type NewDecoration = { from: number; to: number; decoration: Decoration };
 
-export class KeywordHighlighter implements PluginValue {
+export class EditorHighlighter implements PluginValue {
   decorations: DecorationSet;
 
   constructor(view: EditorView) {
@@ -58,6 +58,6 @@ export class KeywordHighlighter implements PluginValue {
   }
 }
 
-export const keywordHighlighter = ViewPlugin.fromClass(KeywordHighlighter, {
-  decorations: (value: KeywordHighlighter) => value.decorations,
+export const editorHighlighter = ViewPlugin.fromClass(EditorHighlighter, {
+  decorations: (value: EditorHighlighter) => value.decorations,
 });

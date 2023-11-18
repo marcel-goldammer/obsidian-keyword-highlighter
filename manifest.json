@@ -1,10 +1,10 @@
 {
-	"id": "keyword-highlighter",
-	"name": "Keyword Highlighter",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Automatically highlight specified keywords within your Obsidian notes for enhanced visibility and quick reference.",
-	"author": "Marcel Goldammer",
-	"authorUrl": "https://marcel-goldammer.de/",
-	"isDesktopOnly": false
+  "id": "keyword-highlighter",
+  "name": "Keyword Highlighter",
+  "version": "1.1.0",
+  "minAppVersion": "0.15.0",
+  "description": "Automatically highlight specified keywords within your Obsidian notes for enhanced visibility and quick reference.",
+  "author": "Marcel Goldammer",
+  "authorUrl": "https://marcel-goldammer.de/",
+  "isDesktopOnly": false
 }
