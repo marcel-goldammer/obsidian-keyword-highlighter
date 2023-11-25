@@ -1,9 +1,9 @@
 import { Decoration } from "@codemirror/view";
-import { KeywordStyle } from "src/editor-extension";
+import { KeywordStyle, getCssClasses } from "src/shared";
 
 export const highlightMark = (keyword: KeywordStyle) =>
   Decoration.mark({
-    class: "kh-highlighted",
+    class: getCssClasses(keyword),
     attributes: {
       style: `--kh-c: ${keyword.color}; --kh-bgc: ${keyword.backgroundColor}`,
     },

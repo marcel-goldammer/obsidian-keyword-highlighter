@@ -1,8 +1,9 @@
 import { MarkdownView, Plugin } from "obsidian";
 import { EditorView } from "@codemirror/view";
-import { KeywordStyle, editorHighlighter } from "src/editor-extension";
-import { SettingTab } from "src/setting-tab";
+import { editorHighlighter } from "src/editor-extension";
+import { SettingTab } from "src/settings/setting-tab";
 import { readerHighlighter } from "./reader-extension";
+import { KeywordStyle } from "./shared";
 
 interface PluginSettings {
   keywords: KeywordStyle[];
@@ -14,16 +15,19 @@ const DEFAULT_SETTINGS: PluginSettings = {
       keyword: "TODO",
       color: "#000",
       backgroundColor: "#A9CCE3",
+      fontModifiers: [],
     },
     {
       keyword: "ADD",
       color: "#000",
       backgroundColor: "#8DE3C2",
+      fontModifiers: [],
     },
     {
       keyword: "FIXME",
       color: "#000",
       backgroundColor: "#BAA2E8",
+      fontModifiers: [],
     },
   ],
 };

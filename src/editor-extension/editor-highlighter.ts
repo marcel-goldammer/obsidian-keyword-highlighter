@@ -8,8 +8,9 @@ import {
   ViewPlugin,
   ViewUpdate,
 } from "@codemirror/view";
-import { KeywordStyle, highlightMark } from "src/editor-extension";
+import { highlightMark } from "src/editor-extension";
 import { KeywordHighlighterPlugin } from "src/keyword-highlighter-plugin";
+import { KeywordStyle } from "src/shared";
 
 type NewDecoration = { from: number; to: number; decoration: Decoration };
 
