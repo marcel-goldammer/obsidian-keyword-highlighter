@@ -1,6 +1,7 @@
 import KeywordHighlighterPlugin from "main";
-import { App, PluginSettingTab, Setting } from "obsidian";
-import { KeywordStyle } from "./editor-extension";
+import { App, ExtraButtonComponent, PluginSettingTab, Setting } from "obsidian";
+import { ToggleButtonComponent } from "./toggle-button-component";
+import { KeywordStyle } from "src/shared";
 
 export class SettingTab extends PluginSettingTab {
   plugin: KeywordHighlighterPlugin;
@@ -26,6 +27,7 @@ export class SettingTab extends PluginSettingTab {
           keyword: "",
           color: "",
           backgroundColor: "",
+          fontModifiers: [],
         });
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const newKeyword = KeywordHighlighterPlugin.settings.keywords.last()!;
@@ -43,16 +45,28 @@ export class SettingTab extends PluginSettingTab {
     index: number,
     container: HTMLElement
   ): void {
-    new Setting(container)
+    const setting = new Setting(container)
       .setName(`Keyword #${index}`)
       .setDesc(
-        "Enter a keyword to highlight, a font color and a background color)"
+        "Enter a keyword, font modifiers, a font color and a background color"
       )
       .addText((text) =>
         text.setValue(keyword.keyword).onChange(async (value) => {
           keyword.keyword = value;
         })
-      )
+      );
+
+    new ToggleButtonComponent(setting.controlEl)
+      .setOptions({
+        bold: "<b>b</b>",
+        italic: "<i>i</i>",
+        underline: "<u>u</u>",
+        lineThrough: "<s>s</s>",
+      })
+      .setState(keyword.fontModifiers ?? [])
+      .setOnOptionClick((modifiers) => (keyword.fontModifiers = modifiers));
+
+    setting
       .addColorPicker((cp) =>
         cp.setValue(keyword.color).onChange(async (value) => {
           keyword.color = value;
@@ -63,7 +77,7 @@ export class SettingTab extends PluginSettingTab {
           keyword.backgroundColor = value;
         })
       )
-      .addExtraButton((button) =>
+      .addExtraButton((button: ExtraButtonComponent) =>
         button
           .setIcon("minus-with-circle")
           .setTooltip("Remove keyword")
@@ -79,6 +93,9 @@ export class SettingTab extends PluginSettingTab {
             }
           })
       );
+
+    // the setting control should never shrink and always get the width it needs...
+    setting.controlEl.style.flexShrink = "0";
   }
 
   async hide(): Promise<void> {
