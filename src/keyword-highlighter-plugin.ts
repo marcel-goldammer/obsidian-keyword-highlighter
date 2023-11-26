@@ -41,7 +41,7 @@ export class KeywordHighlighterPlugin extends Plugin {
     this.registerEditorExtension(editorHighlighter);
     this.registerMarkdownPostProcessor(readerHighlighter);
 
-    this.addCommand(createCommand);
+    this.addCommand(createCommand(this.app));
 
     this.addSettingTab(new SettingTab(this.app, this));
   }
