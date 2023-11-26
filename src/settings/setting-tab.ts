@@ -22,21 +22,9 @@ export class SettingTab extends PluginSettingTab {
     });
 
     new Setting(containerEl).addButton((button) =>
-      button.setButtonText("Add new keyword").onClick(() => {
-        KeywordHighlighterPlugin.settings.keywords.push({
-          keyword: "",
-          color: "",
-          backgroundColor: "",
-          fontModifiers: [],
-        });
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const newKeyword = KeywordHighlighterPlugin.settings.keywords.last()!;
-        this.createKeywordSetting(
-          newKeyword,
-          KeywordHighlighterPlugin.settings.keywords.length - 1,
-          keywordContainer
-        );
-      })
+      button
+        .setButtonText("Add new keyword")
+        .onClick(() => this.addKeywordSetting(keywordContainer))
     );
   }
 
@@ -96,6 +84,22 @@ export class SettingTab extends PluginSettingTab {
 
     // the setting control should never shrink and always get the width it needs...
     setting.controlEl.style.flexShrink = "0";
+  }
+
+  addKeywordSetting(container: HTMLElement, value?: string): void {
+    KeywordHighlighterPlugin.settings.keywords.push({
+      keyword: value ?? "",
+      color: "",
+      backgroundColor: "",
+      fontModifiers: [],
+    });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const newKeyword = KeywordHighlighterPlugin.settings.keywords.last()!;
+    this.createKeywordSetting(
+      newKeyword,
+      KeywordHighlighterPlugin.settings.keywords.length - 1,
+      container
+    );
   }
 
   async hide(): Promise<void> {

@@ -4,6 +4,7 @@ import { editorHighlighter } from "src/editor-extension";
 import { SettingTab } from "src/settings/setting-tab";
 import { readerHighlighter } from "./reader-extension";
 import { KeywordStyle } from "./shared";
+import { createCommand } from "./commands";
 
 interface PluginSettings {
   keywords: KeywordStyle[];
@@ -39,6 +40,8 @@ export class KeywordHighlighterPlugin extends Plugin {
     await this.loadSettings();
     this.registerEditorExtension(editorHighlighter);
     this.registerMarkdownPostProcessor(readerHighlighter);
+
+    this.addCommand(createCommand);
 
     this.addSettingTab(new SettingTab(this.app, this));
   }
