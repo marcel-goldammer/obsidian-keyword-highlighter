@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Command, Editor, MarkdownView } from "obsidian";
 import { SettingTab } from "src/settings/setting-tab";
 
