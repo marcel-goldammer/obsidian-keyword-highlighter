@@ -2,6 +2,7 @@ import KeywordHighlighterPlugin from "main";
 import { App, ExtraButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import { ToggleButtonComponent } from "./toggle-button-component";
 import { KeywordStyle } from "src/shared";
+import { generateInitialColors } from "./generate-initial-colors";
 
 export class SettingTab extends PluginSettingTab {
   plugin: KeywordHighlighterPlugin;
@@ -87,10 +88,11 @@ export class SettingTab extends PluginSettingTab {
   }
 
   addKeywordSetting(container: HTMLElement, value?: string): void {
+    const [foregroundColor, backgroundColor] = generateInitialColors(container);
     KeywordHighlighterPlugin.settings.keywords.push({
       keyword: value ?? "",
-      color: "",
-      backgroundColor: "",
+      color: foregroundColor.toHex(),
+      backgroundColor: backgroundColor.toHex(),
       fontModifiers: [],
     });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
