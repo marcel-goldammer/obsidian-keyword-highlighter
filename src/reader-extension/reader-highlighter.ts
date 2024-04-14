@@ -16,7 +16,7 @@ function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
   ) {
     return;
   } else if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
-    const searchText = `${keyword.keyword}:`;
+    const searchText = `${keyword.keyword}`;
     const index = node.nodeValue.indexOf(searchText);
     if (index > -1) {
       // parent cannot be null

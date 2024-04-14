@@ -47,7 +47,7 @@ export class EditorHighlighter implements PluginValue {
     keyword: KeywordStyle
   ): NewDecoration[] {
     const newDecorations: NewDecoration[] = [];
-    const cursor = new SearchCursor(view.state.doc, `${keyword.keyword}:`);
+    const cursor = new SearchCursor(view.state.doc, `${keyword.keyword}`);
     cursor.next();
     while (!cursor.done) {
       newDecorations.push({
