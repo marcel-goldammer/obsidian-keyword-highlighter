@@ -11,7 +11,10 @@ export class Color {
 
   static fromHex(hex: string): Color {
     const hexPattern = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (!hexPattern) throw new Error("input is not a hex string");
+    if (!hexPattern) {
+      console.warn("input is not a hex string");
+      return new Color(0, 0, 0);
+    }
 
     return new Color(
       parseInt(hexPattern[1], 16),
@@ -38,7 +41,10 @@ export class Color {
   static fromHslString(hslString: string): Color {
     const hslRegex = /hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)/i;
     const match = hslString.match(hslRegex);
-    if (!match) throw new Error("input is not a hsl string");
+    if (!match) {
+      console.warn("input is not a hsl string");
+      return new Color(0, 0, 0);
+    }
 
     const h = parseFloat(match[1]);
     const s = parseFloat(match[2]);
@@ -50,7 +56,10 @@ export class Color {
   static fromRgbString(rgbString: string): Color {
     const rgbRegex = /rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/i;
     const match = rgbString.match(rgbRegex);
-    if (!match) throw new Error("input is not a rgb string");
+    if (!match) {
+      console.warn("input is not a rgb string");
+      return new Color(0, 0, 0);
+    }
 
     const red = parseInt(match[1], 10);
     const green = parseInt(match[2], 10);
