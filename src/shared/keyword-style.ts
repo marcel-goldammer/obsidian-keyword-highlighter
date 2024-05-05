@@ -3,4 +3,6 @@ export type KeywordStyle = {
   color: string;
   backgroundColor: string;
   fontModifiers?: string[];
+  showColor?: boolean;
+  showBackgroundColor?: boolean;
 };

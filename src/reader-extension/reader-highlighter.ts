@@ -49,8 +49,14 @@ function getHighlightNode(
 ): Node {
   const highlight = parent.createSpan();
   highlight.classList.add(...getCssClasses(keyword).split(" "));
-  highlight.style.setProperty("--kh-c", keyword.color);
-  highlight.style.setProperty("--kh-bgc", keyword.backgroundColor);
+  const showColor = keyword.showColor ?? true;
+  if (showColor) {
+    highlight.style.setProperty("--kh-c", keyword.color);
+  }
+  const showBackgroundColor = keyword.showBackgroundColor ?? true;
+  if (showBackgroundColor) {
+    highlight.style.setProperty("--kh-bgc", keyword.backgroundColor);
+  }
   highlight.setText(searchText);
   return highlight;
 }

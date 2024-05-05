@@ -30,3 +30,7 @@
 .kh-toggle-group > .kh-toggle--checked {
   background-color: var(--color-base-40);
 }
+
+input[type="checkbox"].kh-checkbox {
+  margin-inline-end: 0;
+}

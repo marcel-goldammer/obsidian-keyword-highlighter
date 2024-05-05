@@ -3,6 +3,7 @@ import { App, ExtraButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import { ToggleButtonComponent } from "./toggle-button-component";
 import { KeywordStyle } from "src/shared";
 import { generateInitialColors } from "./generate-initial-colors";
+import { CheckboxComponent } from "./checkbox-component";
 
 export class SettingTab extends PluginSettingTab {
   plugin: KeywordHighlighterPlugin;
@@ -55,12 +56,21 @@ export class SettingTab extends PluginSettingTab {
       .setState(keyword.fontModifiers ?? [])
       .setOnOptionClick((modifiers) => (keyword.fontModifiers = modifiers));
 
+    new CheckboxComponent(setting.controlEl)
+      .setState(keyword.showColor ?? true)
+      .setLabel("Activate to modify the font color")
+      .setOnClick((state) => (keyword.showColor = state));
+    setting.addColorPicker((cp) =>
+      cp.setValue(keyword.color).onChange(async (value) => {
+        keyword.color = value;
+      })
+    );
+
+    new CheckboxComponent(setting.controlEl)
+      .setState(keyword.showBackgroundColor ?? true)
+      .setLabel("Activate to modify the background color")
+      .setOnClick((state) => (keyword.showBackgroundColor = state));
     setting
-      .addColorPicker((cp) =>
-        cp.setValue(keyword.color).onChange(async (value) => {
-          keyword.color = value;
-        })
-      )
       .addColorPicker((cp) =>
         cp.setValue(keyword.backgroundColor).onChange(async (value) => {
           keyword.backgroundColor = value;
@@ -94,6 +104,8 @@ export class SettingTab extends PluginSettingTab {
       color: foregroundColor.toHex(),
       backgroundColor: backgroundColor.toHex(),
       fontModifiers: [],
+      showColor: true,
+      showBackgroundColor: true,
     });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const newKeyword = KeywordHighlighterPlugin.settings.keywords.last()!;

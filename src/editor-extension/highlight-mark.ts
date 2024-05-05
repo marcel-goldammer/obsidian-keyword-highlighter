@@ -1,10 +1,21 @@
 import { Decoration } from "@codemirror/view";
 import { KeywordStyle, getCssClasses } from "src/shared";
 
-export const highlightMark = (keyword: KeywordStyle) =>
-  Decoration.mark({
+export const highlightMark = (keyword: KeywordStyle) => {
+  const styles = [];
+  const showColor = keyword.showColor ?? true;
+  if (showColor) {
+    styles.push(`--kh-c: ${keyword.color}`);
+  }
+  const showBackgroundColor = keyword.showBackgroundColor ?? true;
+  if (showBackgroundColor) {
+    styles.push(`--kh-bgc: ${keyword.backgroundColor}`);
+  }
+
+  return Decoration.mark({
     class: getCssClasses(keyword),
     attributes: {
-      style: `--kh-c: ${keyword.color}; --kh-bgc: ${keyword.backgroundColor}`,
+      style: styles.join(";"),
     },
   });
+};
