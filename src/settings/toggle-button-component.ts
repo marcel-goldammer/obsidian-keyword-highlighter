@@ -3,9 +3,9 @@ type OptionsType = Record<string, string>;
 export class ToggleButtonComponent {
   #container: HTMLElement;
   #group: HTMLSpanElement | null = null;
-  #options: OptionsType;
+  #options: OptionsType = {};
   #state: string[] = [];
-  #onOptionClick: (newState: string[]) => void;
+  #onOptionClick: (newState: string[]) => void = () => {};
 
   constructor(container: HTMLElement) {
     this.#container = container;

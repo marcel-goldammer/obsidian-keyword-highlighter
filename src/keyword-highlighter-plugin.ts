@@ -3,7 +3,7 @@ import { EditorView } from "@codemirror/view";
 import { editorHighlighter } from "src/editor-extension";
 import { SettingTab } from "src/settings/setting-tab";
 import { readerHighlighter } from "./reader-extension";
-import { KeywordStyle } from "./shared";
+import type { KeywordStyle } from "./shared";
 import { createCommand } from "./commands";
 
 interface PluginSettings {

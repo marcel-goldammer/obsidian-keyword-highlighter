@@ -1,7 +1,7 @@
 import KeywordHighlighterPlugin from "main";
 import { App, ExtraButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import { ToggleButtonComponent } from "./toggle-button-component";
-import { KeywordStyle } from "src/shared";
+import { type KeywordStyle } from "src/shared";
 import { generateInitialColors } from "./generate-initial-colors";
 import { CheckboxComponent } from "./checkbox-component";
 

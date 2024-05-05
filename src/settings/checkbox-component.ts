@@ -1,9 +1,9 @@
 export class CheckboxComponent {
   #container: HTMLElement;
   #element: HTMLInputElement | null = null;
-  #label: string;
+  #label?: string;
   #state = false;
-  #onClick: (newState: boolean) => void;
+  #onClick: (newState: boolean) => void = () => {};
 
   constructor(container: HTMLElement) {
     this.#container = container;
@@ -33,7 +33,9 @@ export class CheckboxComponent {
     }
     this.#element = this.#container.createEl("input");
     this.#element.type = "checkbox";
-    this.#element.title = this.#label;
+    if (this.#label) {
+      this.#element.title = this.#label;
+    }
     this.#element.checked = this.#state;
     this.#element.classList.add("kh-checkbox");
     this.#element.onclick = () => {

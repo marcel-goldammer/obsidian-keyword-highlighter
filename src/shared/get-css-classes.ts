@@ -1,5 +1,5 @@
 import { fontModifiers } from "./font-modifiers";
-import { KeywordStyle } from "./keyword-style";
+import type { KeywordStyle } from "./keyword-style";
 
 export function getCssClasses(keyword: KeywordStyle): string {
   const classes: string[] = ["kh-highlighted"];

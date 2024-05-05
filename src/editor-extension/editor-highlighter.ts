@@ -2,15 +2,15 @@ import { SearchCursor } from "@codemirror/search";
 import { RangeSetBuilder } from "@codemirror/state";
 import {
   Decoration,
-  DecorationSet,
+  type DecorationSet,
   EditorView,
-  PluginValue,
+  type PluginValue,
   ViewPlugin,
   ViewUpdate,
 } from "@codemirror/view";
 import { highlightMark } from "src/editor-extension";
 import { KeywordHighlighterPlugin } from "src/keyword-highlighter-plugin";
-import { KeywordStyle } from "src/shared";
+import type { KeywordStyle } from "src/shared";
 
 type NewDecoration = { from: number; to: number; decoration: Decoration };
 
