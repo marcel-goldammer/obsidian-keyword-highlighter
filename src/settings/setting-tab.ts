@@ -46,6 +46,16 @@ export class SettingTab extends PluginSettingTab {
         })
       );
 
+    this.addFontModifiers(setting, keyword);
+    this.addFontColorConfig(setting, keyword);
+    this.addBackgroundColorConfig(setting, keyword);
+    this.addRemoveButton(setting, keyword, container);
+
+    // the setting control should never shrink and always get the width it needs...
+    setting.controlEl.style.flexShrink = "0";
+  }
+
+  addFontModifiers(setting: Setting, keyword: KeywordStyle) {
     new ToggleButtonComponent(setting.controlEl)
       .setOptions({
         bold: "<b>b</b>",
@@ -55,7 +65,9 @@ export class SettingTab extends PluginSettingTab {
       })
       .setState(keyword.fontModifiers ?? [])
       .setOnOptionClick((modifiers) => (keyword.fontModifiers = modifiers));
+  }
 
+  addFontColorConfig(setting: Setting, keyword: KeywordStyle) {
     new CheckboxComponent(setting.controlEl)
       .setState(keyword.showColor ?? true)
       .setLabel("Activate to modify the font color")
@@ -65,36 +77,40 @@ export class SettingTab extends PluginSettingTab {
         keyword.color = value;
       })
     );
+  }
 
+  addBackgroundColorConfig(setting: Setting, keyword: KeywordStyle) {
     new CheckboxComponent(setting.controlEl)
       .setState(keyword.showBackgroundColor ?? true)
       .setLabel("Activate to modify the background color")
       .setOnClick((state) => (keyword.showBackgroundColor = state));
-    setting
-      .addColorPicker((cp) =>
-        cp.setValue(keyword.backgroundColor).onChange(async (value) => {
-          keyword.backgroundColor = value;
-        })
-      )
-      .addExtraButton((button: ExtraButtonComponent) =>
-        button
-          .setIcon("minus-with-circle")
-          .setTooltip("Remove keyword")
-          .onClick(async () => {
-            // remove the keyword from settings
-            const i =
-              KeywordHighlighterPlugin.settings.keywords.indexOf(keyword);
-            if (i > -1) {
-              KeywordHighlighterPlugin.settings.keywords.splice(i, 1);
-              const settingEl =
-                container.getElementsByClassName("setting-item")[i];
-              container.removeChild(settingEl);
-            }
-          })
-      );
+    setting.addColorPicker((cp) =>
+      cp.setValue(keyword.backgroundColor).onChange(async (value) => {
+        keyword.backgroundColor = value;
+      })
+    );
+  }
 
-    // the setting control should never shrink and always get the width it needs...
-    setting.controlEl.style.flexShrink = "0";
+  addRemoveButton(
+    setting: Setting,
+    keyword: KeywordStyle,
+    container: HTMLElement
+  ) {
+    setting.addExtraButton((button: ExtraButtonComponent) =>
+      button
+        .setIcon("minus-with-circle")
+        .setTooltip("Remove keyword")
+        .onClick(async () => {
+          // remove the keyword from settings
+          const i = KeywordHighlighterPlugin.settings.keywords.indexOf(keyword);
+          if (i > -1) {
+            KeywordHighlighterPlugin.settings.keywords.splice(i, 1);
+            const settingEl =
+              container.getElementsByClassName("setting-item")[i];
+            container.removeChild(settingEl);
+          }
+        })
+    );
   }
 
   addKeywordSetting(container: HTMLElement, value?: string): void {
