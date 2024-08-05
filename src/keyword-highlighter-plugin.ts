@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS: PluginSettings = {
   keywords: [
     {
       keyword: "TODO",
-      color: "#000",
+      color: "#000000",
       backgroundColor: "#A9CCE3",
       fontModifiers: [],
       showColor: true,
@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: PluginSettings = {
     },
     {
       keyword: "ADD",
-      color: "#000",
+      color: "#000000",
       backgroundColor: "#8DE3C2",
       fontModifiers: [],
       showColor: true,
@@ -30,7 +30,7 @@ const DEFAULT_SETTINGS: PluginSettings = {
     },
     {
       keyword: "FIXME",
-      color: "#000",
+      color: "#000000",
       backgroundColor: "#BAA2E8",
       fontModifiers: [],
       showColor: true,

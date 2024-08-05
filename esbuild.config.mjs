@@ -12,17 +12,6 @@ if you want to view the source, please visit the github repository of this plugi
 
 const prod = process.argv[2] === "production";
 
-esbuild
-  .build({
-    plugins: [
-      esbuildSvelte({
-        compilerOptions: { css: true },
-        preprocess: sveltePreprocess(),
-      }),
-    ],
-  })
-  .catch(() => process.exit(1));
-
 const context = await esbuild.context({
   banner: {
     js: banner,
@@ -51,6 +40,12 @@ const context = await esbuild.context({
   sourcemap: prod ? false : "inline",
   treeShaking: true,
   outfile: "main.js",
+  plugins: [
+    esbuildSvelte({
+      compilerOptions: { css: true },
+      preprocess: sveltePreprocess(),
+    }),
+  ],
 });
 
 if (prod) {
