@@ -1,5 +1,5 @@
 import { Decoration } from "@codemirror/view";
-import { KeywordStyle, getCssClasses } from "src/shared";
+import { type KeywordStyle, getCssClasses } from "src/shared";
 
 export const highlightMark = (keyword: KeywordStyle) => {
   const styles = [];

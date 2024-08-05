@@ -1,6 +1,6 @@
 import KeywordHighlighterPlugin from "main";
-import { MarkdownPostProcessor } from "obsidian";
-import { KeywordStyle, getCssClasses } from "src/shared";
+import type { MarkdownPostProcessor } from "obsidian";
+import { type KeywordStyle, getCssClasses } from "src/shared";
 
 export const readerHighlighter: MarkdownPostProcessor = (el: HTMLElement) => {
   KeywordHighlighterPlugin.settings.keywords
