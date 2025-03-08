@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { App, Command, MarkdownView } from "obsidian";
+import { App, type Command, MarkdownView } from "obsidian";
 import { SettingTab } from "src/settings/setting-tab";
+import { addKeyword } from "src/stores/settings-store";
 
 const settingTabId = "keyword-highlighter";
 
@@ -8,14 +9,7 @@ function openSettingsAndAddKeyword(app: App, value: string | undefined): void {
   const setting = (app as any).setting;
   setting.open();
   setting.openTabById(settingTabId);
-
-  const settingTab: SettingTab = setting.pluginTabs.find(
-    (tab: any) => tab.id === settingTabId
-  );
-
-  const keywordContainer = settingTab.containerEl
-    .firstElementChild as HTMLElement;
-  settingTab.addKeywordSetting(keywordContainer, value);
+  addKeyword(value)
 }
 
 export const createCommand: (app: App) => Command = (app: App) => ({

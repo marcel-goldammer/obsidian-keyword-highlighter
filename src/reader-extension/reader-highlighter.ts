@@ -1,9 +1,11 @@
-import KeywordHighlighterPlugin from "main";
 import type { MarkdownPostProcessor } from "obsidian";
 import { type KeywordStyle, getCssClasses } from "src/shared";
+import { settingsStore } from "src/stores/settings-store";
+import { get } from "svelte/store";
 
 export const readerHighlighter: MarkdownPostProcessor = (el: HTMLElement) => {
-  KeywordHighlighterPlugin.settings.keywords
+  const settings = get(settingsStore);
+  settings.keywords
     .filter((keyword) => !!keyword.keyword)
     .forEach((keyword) => replaceWithHighlight(el, keyword));
 };
