@@ -1,17 +1,10 @@
-import { SearchCursor } from "@codemirror/search";
-import { RangeSetBuilder } from "@codemirror/state";
-import {
-  Decoration,
-  type DecorationSet,
-  EditorView,
-  type PluginValue,
-  ViewPlugin,
-  ViewUpdate,
-} from "@codemirror/view";
-import { highlightMark } from "src/editor-extension";
-import type { KeywordStyle } from "src/shared";
-import { settingsStore } from "src/stores/settings-store";
-import { get } from "svelte/store";
+import { SearchCursor } from '@codemirror/search';
+import { RangeSetBuilder } from '@codemirror/state';
+import { Decoration, type DecorationSet, EditorView, type PluginValue, ViewPlugin, ViewUpdate } from '@codemirror/view';
+import { highlightMark } from 'src/editor-extension';
+import type { KeywordStyle } from 'src/shared';
+import { settingsStore } from 'src/stores/settings-store';
+import { get } from 'svelte/store';
 
 type NewDecoration = { from: number; to: number; decoration: Decoration };
 
@@ -51,21 +44,14 @@ export class EditorHighlighter implements PluginValue {
 
     const settings = get(settingsStore);
 
-    settings.keywords
-      .filter((keyword) => !!keyword.keyword)
-      .forEach((k) =>
-        newDecorations.push(...this.buildDecorationsForKeyword(view, k))
-      );
+    settings.keywords.filter((keyword) => !!keyword.keyword).forEach((k) => newDecorations.push(...this.buildDecorationsForKeyword(view, k)));
     newDecorations.sort((a, b) => a.from - b.from);
     newDecorations.forEach((d) => builder.add(d.from, d.to, d.decoration));
 
     return builder.finish();
   }
 
-  buildDecorationsForKeyword(
-    view: EditorView,
-    keyword: KeywordStyle
-  ): NewDecoration[] {
+  buildDecorationsForKeyword(view: EditorView, keyword: KeywordStyle): NewDecoration[] {
     const newDecorations: NewDecoration[] = [];
     const cursor = new SearchCursor(view.state.doc, `${keyword.keyword}`);
     cursor.next();

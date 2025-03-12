@@ -1,7 +1,7 @@
-import KeywordHighlighterPlugin from "main";
-import { App, PluginSettingTab } from "obsidian";
-import SettingTabComponent from "./SettingTab.svelte";
-import { addKeyword, saveStore, settingsStore } from "src/stores/settings-store";
+import KeywordHighlighterPlugin from 'main';
+import { App, PluginSettingTab } from 'obsidian';
+import SettingTabComponent from './SettingTab.svelte';
+import { saveStore, settingsStore } from 'src/stores/settings-store';
 
 export class SettingTab extends PluginSettingTab {
   plugin: KeywordHighlighterPlugin;
@@ -19,7 +19,7 @@ export class SettingTab extends PluginSettingTab {
     this.component = new SettingTabComponent({
       target: containerEl,
       props: {
-        settingsStore
+        settingsStore,
       },
     });
   }

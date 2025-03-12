@@ -1,8 +1,8 @@
-import { App, MarkdownView } from "obsidian";
-import type { KeywordHighlighterPlugin } from "src/keyword-highlighter-plugin";
-import { generateInitialColors } from "src/settings/generate-initial-colors";
-import type { KeywordStyle } from "src/shared";
-import { get, writable } from "svelte/store";
+import { App, MarkdownView } from 'obsidian';
+import type { KeywordHighlighterPlugin } from 'src/keyword-highlighter-plugin';
+import { generateInitialColors } from 'src/settings/generate-initial-colors';
+import type { KeywordStyle } from 'src/shared';
+import { get, writable } from 'svelte/store';
 
 export interface PluginSettings {
   keywords: KeywordStyle[];
@@ -11,25 +11,25 @@ export interface PluginSettings {
 const DEFAULT_SETTINGS: PluginSettings = {
   keywords: [
     {
-      keyword: "TODO",
-      color: "#000000",
-      backgroundColor: "#A9CCE3",
+      keyword: 'TODO',
+      color: '#000000',
+      backgroundColor: '#A9CCE3',
       fontModifiers: [],
       showColor: true,
       showBackgroundColor: true,
     },
     {
-      keyword: "ADD",
-      color: "#000000",
-      backgroundColor: "#8DE3C2",
+      keyword: 'ADD',
+      color: '#000000',
+      backgroundColor: '#8DE3C2',
       fontModifiers: [],
       showColor: true,
       showBackgroundColor: true,
     },
     {
-      keyword: "FIXME",
-      color: "#000000",
-      backgroundColor: "#BAA2E8",
+      keyword: 'FIXME',
+      color: '#000000',
+      backgroundColor: '#BAA2E8',
       fontModifiers: [],
       showColor: true,
       showBackgroundColor: true,
@@ -61,9 +61,7 @@ export async function saveStore(): Promise<void> {
 
   const currentSettings = get(settingsStore);
 
-  currentSettings.keywords = currentSettings.keywords.filter(
-    k => k.keyword && k.keyword.match(/^ *$/) === null
-  );
+  currentSettings.keywords = currentSettings.keywords.filter((k) => k.keyword && k.keyword.match(/^ *$/) === null);
 
   await plugin.saveData(currentSettings);
   refreshViews();

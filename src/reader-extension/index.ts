@@ -1,1 +1,1 @@
-export * from "./reader-highlighter";
+export * from './reader-highlighter';

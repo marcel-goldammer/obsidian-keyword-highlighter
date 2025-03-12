@@ -31,13 +31,13 @@ export class CheckboxComponent {
     if (this.#element) {
       this.#container.removeChild(this.#element);
     }
-    this.#element = this.#container.createEl("input");
-    this.#element.type = "checkbox";
+    this.#element = this.#container.createEl('input');
+    this.#element.type = 'checkbox';
     if (this.#label) {
       this.#element.title = this.#label;
     }
     this.#element.checked = this.#state;
-    this.#element.classList.add("kh-checkbox");
+    this.#element.classList.add('kh-checkbox');
     this.#element.onclick = () => {
       this.#state = !this.#state;
       this.#onClick(this.#state);
