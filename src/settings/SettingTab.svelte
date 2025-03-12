@@ -1,27 +1,32 @@
 <script lang="ts">
-  import type { KeywordStyle } from "src/shared";
-  import KeywordSetting from "./KeywordSetting.svelte";
-  import { createEventDispatcher } from "svelte";
+  import type { KeywordStyle } from 'src/shared';
+  import KeywordSetting from './KeywordSetting.svelte';
+  import type { Writable } from 'svelte/store';
+  import { addKeyword, removeKeyword, type PluginSettings } from 'src/stores/settings-store';
 
-  export let keywords: KeywordStyle[];
+  export let settingsStore: Writable<PluginSettings>;
 
-  const dispatch = createEventDispatcher();
+  $: keywords = $settingsStore.keywords;
 
+  // eslint-disable-next-line no-undef
   let ref: HTMLElement;
+
+  function handleAddKeyword() {
+    addKeyword('', ref);
+  }
+
+  function handleRemoveKeyword(keyword: KeywordStyle) {
+    removeKeyword(keyword);
+  }
 </script>
 
 <div bind:this={ref}>
   {#each keywords as keyword, index}
-    <KeywordSetting
-      {index}
-      {keyword}
-      on:remove={() => dispatch("removeKeyword", { keyword })}
-      on:update={() => dispatch("update")}
-    />
+    <KeywordSetting {index} {keyword} on:remove={() => handleRemoveKeyword(keyword)} />
   {/each}
 
   <div class="setting-item">
-    <button on:click={() => dispatch("addKeyword")}>Add new keyword</button>
+    <button on:click={handleAddKeyword}>Add new keyword</button>
   </div>
 </div>
 

@@ -12,15 +12,11 @@ export class Color {
   static fromHex(hex: string): Color {
     const hexPattern = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!hexPattern) {
-      console.warn("input is not a hex string");
+      console.warn('input is not a hex string');
       return new Color(0, 0, 0);
     }
 
-    return new Color(
-      parseInt(hexPattern[1], 16),
-      parseInt(hexPattern[2], 16),
-      parseInt(hexPattern[3], 16)
-    );
+    return new Color(parseInt(hexPattern[1], 16), parseInt(hexPattern[2], 16), parseInt(hexPattern[3], 16));
   }
 
   static fromHsl(h: number, s: number, l: number): Color {
@@ -28,21 +24,15 @@ export class Color {
     const normalizedL = l / 100;
     const hueShift = (n: number) => (n + h / 30) % 12;
     const chroma = normalizedS * Math.min(normalizedL, 1 - normalizedL);
-    const colorComponent = (n: number) =>
-      normalizedL -
-      chroma * Math.max(-1, Math.min(hueShift(n) - 3, 9 - hueShift(n), 1));
-    return new Color(
-      Math.round(255 * colorComponent(0)),
-      Math.round(255 * colorComponent(8)),
-      Math.round(255 * colorComponent(4))
-    );
+    const colorComponent = (n: number) => normalizedL - chroma * Math.max(-1, Math.min(hueShift(n) - 3, 9 - hueShift(n), 1));
+    return new Color(Math.round(255 * colorComponent(0)), Math.round(255 * colorComponent(8)), Math.round(255 * colorComponent(4)));
   }
 
   static fromHslString(hslString: string): Color {
     const hslRegex = /hsl\(\s*(\d+),\s*(\d+)%,\s*(\d+)%\)/i;
     const match = hslString.match(hslRegex);
     if (!match) {
-      console.warn("input is not a hsl string");
+      console.warn('input is not a hsl string');
       return new Color(0, 0, 0);
     }
 
@@ -57,7 +47,7 @@ export class Color {
     const rgbRegex = /rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/i;
     const match = rgbString.match(rgbRegex);
     if (!match) {
-      console.warn("input is not a rgb string");
+      console.warn('input is not a rgb string');
       return new Color(0, 0, 0);
     }
 
@@ -69,12 +59,7 @@ export class Color {
   }
 
   toHex(): string {
-    return (
-      "#" +
-      ((1 << 24) + (this.r << 16) + (this.g << 8) + this.b)
-        .toString(16)
-        .slice(1)
-    );
+    return '#' + ((1 << 24) + (this.r << 16) + (this.g << 8) + this.b).toString(16).slice(1);
   }
 
   toHsl(): [number, number, number] {

@@ -34,24 +34,21 @@ export class ToggleButtonComponent {
       this.#container.removeChild(this.#group);
     }
     this.#group = this.#container.createSpan();
-    this.#group.classList.add("kh-toggle-group");
+    this.#group.classList.add('kh-toggle-group');
     for (const key of Object.keys(this.#options)) {
       this.createOptionButton(key, this.#group);
     }
   }
 
-  private createOptionButton(
-    key: string,
-    parent: HTMLElement
-  ): HTMLButtonElement {
-    const optionButton = parent.createEl("button");
+  private createOptionButton(key: string, parent: HTMLElement): HTMLButtonElement {
+    const optionButton = parent.createEl('button');
     optionButton.innerHTML = this.#options[key];
     if (this.#state.contains(key)) {
-      optionButton.classList.add("kh-toggle--checked");
+      optionButton.classList.add('kh-toggle--checked');
     }
     optionButton.onclick = () => {
       this.toggleState(key);
-      optionButton.classList.toggle("kh-toggle--checked");
+      optionButton.classList.toggle('kh-toggle--checked');
       this.#onOptionClick(this.#state);
     };
     return optionButton;

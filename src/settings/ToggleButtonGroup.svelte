@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from 'svelte';
 
   export let options: Record<string, string> = {};
   export let state: string[] = [];
@@ -12,16 +12,14 @@
     } else {
       state = [...state, key];
     }
-    dispatch("stateChanged", { state });
+    dispatch('stateChanged', { state });
   }
 </script>
 
 <span class="group">
   {#each Object.entries(options) as [key, value]}
-    <button
-      class:checked={state.contains(key)}
-      on:click={() => toggleState(key)}>{@html value}</button
-    >
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+    <button class:checked={state.contains(key)} on:click={() => toggleState(key)}>{@html value}</button>
   {/each}
 </span>
 

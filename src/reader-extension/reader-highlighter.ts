@@ -1,18 +1,18 @@
-import KeywordHighlighterPlugin from "main";
-import type { MarkdownPostProcessor } from "obsidian";
-import { type KeywordStyle, getCssClasses } from "src/shared";
+import type { MarkdownPostProcessor } from 'obsidian';
+import { type KeywordStyle, getCssClasses } from 'src/shared';
+import { settingsStore } from 'src/stores/settings-store';
+import { get } from 'svelte/store';
 
 export const readerHighlighter: MarkdownPostProcessor = (el: HTMLElement) => {
-  KeywordHighlighterPlugin.settings.keywords
-    .filter((keyword) => !!keyword.keyword)
-    .forEach((keyword) => replaceWithHighlight(el, keyword));
+  const settings = get(settingsStore);
+  settings.keywords.filter((keyword) => !!keyword.keyword).forEach((keyword) => replaceWithHighlight(el, keyword));
 };
 
 function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
   if (
     // skip highlighting nodes
     node.nodeType === Node.ELEMENT_NODE &&
-    (<Element>node).classList.contains("kh-highlighted")
+    (<Element>node).classList.contains('kh-highlighted')
   ) {
     return;
   } else if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
@@ -31,9 +31,7 @@ function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
       node.nodeValue = afterText;
       // we have to call the function again for all sibling nodes
       // to find all keyword occurances
-      parent.childNodes.forEach((child) =>
-        replaceWithHighlight(child, keyword)
-      );
+      parent.childNodes.forEach((child) => replaceWithHighlight(child, keyword));
     }
 
     return;
@@ -42,20 +40,16 @@ function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
   node.childNodes.forEach((child) => replaceWithHighlight(child, keyword));
 }
 
-function getHighlightNode(
-  parent: Node,
-  searchText: string,
-  keyword: KeywordStyle
-): Node {
+function getHighlightNode(parent: Node, searchText: string, keyword: KeywordStyle): Node {
   const highlight = parent.createSpan();
-  highlight.classList.add(...getCssClasses(keyword).split(" "));
+  highlight.classList.add(...getCssClasses(keyword).split(' '));
   const showColor = keyword.showColor ?? true;
   if (showColor) {
-    highlight.style.setProperty("--kh-c", keyword.color);
+    highlight.style.setProperty('--kh-c', keyword.color);
   }
   const showBackgroundColor = keyword.showBackgroundColor ?? true;
   if (showBackgroundColor) {
-    highlight.style.setProperty("--kh-bgc", keyword.backgroundColor);
+    highlight.style.setProperty('--kh-bgc', keyword.backgroundColor);
   }
   highlight.setText(searchText);
   return highlight;
