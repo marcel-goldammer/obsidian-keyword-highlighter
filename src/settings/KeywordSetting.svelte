@@ -74,7 +74,12 @@
       }}
     />
     <input type="color" bind:value={keyword.backgroundColor} on:change={updateKeyword} />
-    <button class="clickable-icon" aria-label="Remove keyword" use:useIcon={'minus-circle'} on:click={() => dispatch('remove', keyword)}></button>
+    <button
+      class="clickable-icon"
+      aria-label="Remove keyword"
+      use:useIcon={'minus-circle'}
+      on:click={() => dispatch('remove', keyword)}
+    ></button>
   </div>
 </div>
 

@@ -44,7 +44,9 @@ export class EditorHighlighter implements PluginValue {
 
     const settings = get(settingsStore);
 
-    settings.keywords.filter((keyword) => !!keyword.keyword).forEach((k) => newDecorations.push(...this.buildDecorationsForKeyword(view, k)));
+    settings.keywords
+      .filter((keyword) => !!keyword.keyword)
+      .forEach((k) => newDecorations.push(...this.buildDecorationsForKeyword(view, k)));
     newDecorations.sort((a, b) => a.from - b.from);
     newDecorations.forEach((d) => builder.add(d.from, d.to, d.decoration));
 

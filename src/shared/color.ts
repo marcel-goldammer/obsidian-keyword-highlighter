@@ -24,8 +24,13 @@ export class Color {
     const normalizedL = l / 100;
     const hueShift = (n: number) => (n + h / 30) % 12;
     const chroma = normalizedS * Math.min(normalizedL, 1 - normalizedL);
-    const colorComponent = (n: number) => normalizedL - chroma * Math.max(-1, Math.min(hueShift(n) - 3, 9 - hueShift(n), 1));
-    return new Color(Math.round(255 * colorComponent(0)), Math.round(255 * colorComponent(8)), Math.round(255 * colorComponent(4)));
+    const colorComponent = (n: number) =>
+      normalizedL - chroma * Math.max(-1, Math.min(hueShift(n) - 3, 9 - hueShift(n), 1));
+    return new Color(
+      Math.round(255 * colorComponent(0)),
+      Math.round(255 * colorComponent(8)),
+      Math.round(255 * colorComponent(4)),
+    );
   }
 
   static fromHslString(hslString: string): Color {

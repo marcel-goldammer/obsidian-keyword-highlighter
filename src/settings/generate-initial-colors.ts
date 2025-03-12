@@ -38,7 +38,9 @@ function toColor(value: string): Color {
 function luminance(color: Color): number {
   const normalizedValues = [color.r, color.g, color.b].map((colorComponent) => {
     const normalizedComponent = colorComponent / 255;
-    return normalizedComponent <= 0.03928 ? normalizedComponent / 12.92 : Math.pow((normalizedComponent + 0.055) / 1.055, 2.4);
+    return normalizedComponent <= 0.03928
+      ? normalizedComponent / 12.92
+      : Math.pow((normalizedComponent + 0.055) / 1.055, 2.4);
   });
   return normalizedValues[0] * 0.2126 + normalizedValues[1] * 0.7152 + normalizedValues[2] * 0.0722;
 }
