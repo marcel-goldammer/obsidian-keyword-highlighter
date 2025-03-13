@@ -43,19 +43,21 @@ export class EditorHighlighter implements PluginValue {
     const newDecorations: NewDecoration[] = [];
 
     const settings = get(settingsStore);
+    const caseSensitive = settings.generalSettings?.caseSensitive ?? true;
 
     settings.keywords
       .filter((keyword) => !!keyword.keyword)
-      .forEach((k) => newDecorations.push(...this.buildDecorationsForKeyword(view, k)));
+      .forEach((k) => newDecorations.push(...this.buildDecorationsForKeyword(view, k, caseSensitive)));
     newDecorations.sort((a, b) => a.from - b.from);
     newDecorations.forEach((d) => builder.add(d.from, d.to, d.decoration));
 
     return builder.finish();
   }
 
-  buildDecorationsForKeyword(view: EditorView, keyword: KeywordStyle): NewDecoration[] {
+  buildDecorationsForKeyword(view: EditorView, keyword: KeywordStyle, caseSensitive: boolean): NewDecoration[] {
     const newDecorations: NewDecoration[] = [];
-    const cursor = new SearchCursor(view.state.doc, `${keyword.keyword}`);
+    let normalize = (s: string) => (caseSensitive ? s : s.toLowerCase());
+    const cursor = new SearchCursor(view.state.doc, keyword.keyword, 0, view.state.doc.length, normalize);
     cursor.next();
     while (!cursor.done) {
       newDecorations.push({

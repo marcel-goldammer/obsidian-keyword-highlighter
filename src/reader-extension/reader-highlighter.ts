@@ -5,10 +5,13 @@ import { get } from 'svelte/store';
 
 export const readerHighlighter: MarkdownPostProcessor = (el: HTMLElement) => {
   const settings = get(settingsStore);
-  settings.keywords.filter((keyword) => !!keyword.keyword).forEach((keyword) => replaceWithHighlight(el, keyword));
+  const caseSensitive = settings.generalSettings?.caseSensitive ?? true;
+  settings.keywords
+    .filter((keyword) => !!keyword.keyword)
+    .forEach((keyword) => replaceWithHighlight(el, keyword, caseSensitive));
 };
 
-function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
+function replaceWithHighlight(node: Node, keyword: KeywordStyle, caseSensitive: boolean) {
   if (
     // skip highlighting nodes
     node.nodeType === Node.ELEMENT_NODE &&
@@ -17,27 +20,35 @@ function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
     return;
   } else if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
     const searchText = `${keyword.keyword}`;
-    const index = node.nodeValue.indexOf(searchText);
+
+    // handle case sensitive search
+    let index = -1;
+    if (caseSensitive) {
+      index = node.nodeValue.indexOf(searchText);
+    } else {
+      index = node.nodeValue.toLowerCase().indexOf(searchText.toLowerCase());
+    }
+
     if (index > -1) {
       // parent cannot be null
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const parent = node.parentNode!;
       const beforeText = node.nodeValue.substring(0, index);
-      const afterText = node.nodeValue.substring(index + searchText.length);
-      const highlight = getHighlightNode(parent, searchText, keyword);
+      const matchedLength = searchText.length;
+      const actualMatch = node.nodeValue.substring(index, index + matchedLength);
+      const afterText = node.nodeValue.substring(index + matchedLength);
       // insert order: <beforeText> <highlight> <afterText>
       parent.insertBefore(document.createTextNode(beforeText), node);
-      parent.insertBefore(highlight, node);
+      parent.insertBefore(getHighlightNode(parent, actualMatch, keyword), node);
       node.nodeValue = afterText;
       // we have to call the function again for all sibling nodes
       // to find all keyword occurances
-      parent.childNodes.forEach((child) => replaceWithHighlight(child, keyword));
+      parent.childNodes.forEach((child) => replaceWithHighlight(child, keyword, caseSensitive));
     }
 
     return;
   }
   // call recursively
-  node.childNodes.forEach((child) => replaceWithHighlight(child, keyword));
+  node.childNodes.forEach((child) => replaceWithHighlight(child, keyword, caseSensitive));
 }
 
 function getHighlightNode(parent: Node, searchText: string, keyword: KeywordStyle): Node {

@@ -28,13 +28,12 @@
     });
   }
 
-  // eslint-disable-next-line no-undef
   function useIcon(node: HTMLElement, icon: string) {
     setIcon(node, icon);
     return {
       update(icon: string) {
         setIcon(node, icon);
-      },
+      }, 
     };
   }
 </script>

@@ -4,11 +4,19 @@ import { generateInitialColors } from 'src/settings/generate-initial-colors';
 import type { KeywordStyle } from 'src/shared';
 import { get, writable } from 'svelte/store';
 
+export interface GeneralSettings {
+  caseSensitive: boolean;
+}
+
 export interface PluginSettings {
+  generalSettings?: GeneralSettings;
   keywords: KeywordStyle[];
 }
 
 const DEFAULT_SETTINGS: PluginSettings = {
+  generalSettings: {
+    caseSensitive: true,
+  },
   keywords: [
     {
       keyword: 'TODO',
