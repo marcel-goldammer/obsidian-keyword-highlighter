@@ -1,4 +1,4 @@
-import eslint from '@eslint/js';
+import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import sveltePlugin from 'eslint-plugin-svelte';
@@ -10,10 +10,6 @@ export default [
     languageOptions: {
       sourceType: 'module',
       ecmaVersion: 'latest',
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
       globals: {
         ...globals.browser,
         ...globals.node,
@@ -24,7 +20,7 @@ export default [
 
   {
     files: ['**/*.js', '**/*.mjs'],
-    ...eslint.configs.recommended,
+    ...js.configs.recommended,
     ignores: ['main.js'],
   },
 
@@ -61,7 +57,7 @@ export default [
         extraFileExtensions: ['.svelte'],
       },
     },
-    processor: sveltePlugin.processors['.svelte'],
+    processor: 'svelte/svelte',
     rules: {
       ...sveltePlugin.configs.recommended.rules,
       'no-unused-vars': 'off',

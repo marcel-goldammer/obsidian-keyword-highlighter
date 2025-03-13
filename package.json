@@ -15,24 +15,25 @@
   "license": "MIT",
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.4",
-    "@types/node": "20.12.8",
-    "@typescript-eslint/eslint-plugin": "7.8.0",
-    "@typescript-eslint/parser": "7.8.0",
-    "builtin-modules": "4.0.0",
-    "esbuild": "0.20.2",
-    "esbuild-svelte": "^0.8.0",
-    "eslint-plugin-svelte": "^2.46.1",
+    "@types/node": "22.13.10",
+    "@typescript-eslint/eslint-plugin": "8.26.1",
+    "@typescript-eslint/parser": "8.26.1",
+    "builtin-modules": "5.0.0",
+    "esbuild": "0.25.1",
+    "esbuild-svelte": "^0.9.1",
+    "eslint": "^9.22.0",
+    "eslint-plugin-svelte": "^3.1.0",
     "globals": "^16.0.0",
     "obsidian": "latest",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
-    "svelte": "^4.2.15",
-    "svelte-preprocess": "^5.1.4",
-    "tslib": "2.6.2",
-    "typescript": "5.4.5",
+    "svelte": "^5.23.0",
+    "svelte-preprocess": "^6.0.3",
+    "tslib": "2.8.1",
+    "typescript": "5.8.2",
     "typescript-eslint": "^8.26.1"
   },
   "dependencies": {
-    "@codemirror/search": "^6.0.0"
+    "@codemirror/search": "^6.5.10"
   }
 }
