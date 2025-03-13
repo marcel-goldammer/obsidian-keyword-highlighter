@@ -8,7 +8,7 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .ts,.js,.svelte"
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
@@ -22,13 +22,15 @@
     "esbuild": "0.20.2",
     "esbuild-svelte": "^0.8.0",
     "eslint-plugin-svelte": "^2.46.1",
+    "globals": "^16.0.0",
     "obsidian": "latest",
     "prettier": "^3.5.3",
     "prettier-plugin-svelte": "^3.3.3",
     "svelte": "^4.2.15",
     "svelte-preprocess": "^5.1.4",
     "tslib": "2.6.2",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "typescript-eslint": "^8.26.1"
   },
   "dependencies": {
     "@codemirror/search": "^6.0.0"
