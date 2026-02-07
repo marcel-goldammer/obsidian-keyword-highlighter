@@ -9,12 +9,15 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
     "format": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^20.4.1",
+    "@commitlint/config-conventional": "^20.4.1",
     "@tsconfig/svelte": "^5.0.7",
     "@types/node": "25.2.1",
     "@typescript-eslint/eslint-plugin": "8.54.0",
@@ -24,6 +27,8 @@
     "esbuild-svelte": "^0.9.4",
     "eslint-plugin-svelte": "^3.14.0",
     "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "obsidian": "latest",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.4.1",
