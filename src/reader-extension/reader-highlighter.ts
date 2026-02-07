@@ -20,7 +20,6 @@ function replaceWithHighlight(node: Node, keyword: KeywordStyle) {
     const index = node.nodeValue.indexOf(searchText);
     if (index > -1) {
       // parent cannot be null
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const parent = node.parentNode!;
       const beforeText = node.nodeValue.substring(0, index);
       const afterText = node.nodeValue.substring(index + searchText.length);
