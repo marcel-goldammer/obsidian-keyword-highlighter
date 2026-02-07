@@ -21,7 +21,7 @@ export class EditorHighlighter implements PluginValue {
             this.decorations = this.buildDecorations(view);
             view.requestMeasure();
           }
-        } catch (e) {
+        } catch {
           this.unsubscribe();
         }
       }, 0);
