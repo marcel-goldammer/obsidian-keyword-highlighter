@@ -34,10 +34,15 @@
       <KeywordSetting {index} {keyword} on:remove={() => handleRemoveKeyword(keyword)} />
     {/each}
 
-    <div class="setting-item">
+    <div class="setting-item kh-add-keyword">
       <button on:click={handleAddKeyword}>Add new keyword</button>
     </div>
   </CollapsibleSection>
 </div>
 
-<style></style>
+<style>
+  .kh-add-keyword {
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

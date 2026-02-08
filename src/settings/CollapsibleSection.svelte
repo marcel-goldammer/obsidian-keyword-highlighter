@@ -23,9 +23,13 @@
 </details>
 
 <style>
-  details {
+  details + details {
     border-top: 1px solid var(--background-modifier-border);
     padding-top: 18px;
+    margin-top: 18px;
+  }
+
+  details {
     margin-bottom: 18px;
   }
 
@@ -37,6 +41,20 @@
     font-size: var(--font-ui-medium);
     color: var(--text-normal);
     padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  summary::before {
+    content: '▶';
+    font-size: 0.65em;
+    transition: transform 0.15s ease;
+    display: inline-block;
+  }
+
+  details[open] > summary::before {
+    transform: rotate(90deg);
   }
 
   summary::-webkit-details-marker {
