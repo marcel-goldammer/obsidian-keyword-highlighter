@@ -18,6 +18,8 @@
     lineThrough: '<s>s</s>',
   };
 
+  $: isRegex = keyword.keyword.startsWith('/') && keyword.keyword.endsWith('/') && keyword.keyword.length > 2;
+
   function updateKeyword() {
     settingsStore.update((settings) => {
       const keywordIndex = settings.keywords.indexOf(keyword);
@@ -45,8 +47,11 @@
     <div class="setting-item-description">Enter a keyword, font modifiers, a font color and a background color</div>
   </div>
   <div class="setting-item-control">
-    <div>
+    <div class="kh-keyword-input-wrapper">
       <input type="text" spellcheck="false" bind:value={keyword.keyword} on:change={updateKeyword} />
+      {#if isRegex}
+        <span class="kh-regex-badge" title="Regular expression pattern">.*</span>
+      {/if}
     </div>
     <ToggleButtonGroup
       options={toggleButtonOptions}
@@ -81,5 +86,22 @@
 <style>
   .setting-item-control {
     flex-shrink: 0;
+  }
+
+  .kh-keyword-input-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .kh-regex-badge {
+    font-family: var(--font-monospace);
+    font-size: var(--font-ui-smaller);
+    color: var(--text-muted);
+    background-color: var(--background-modifier-hover);
+    padding: 1px 4px;
+    border-radius: var(--radius-s);
+    white-space: nowrap;
+    user-select: none;
   }
 </style>
