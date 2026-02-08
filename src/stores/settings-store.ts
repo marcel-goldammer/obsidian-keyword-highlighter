@@ -4,11 +4,20 @@ import { generateInitialColors } from 'src/settings/generate-initial-colors';
 import type { KeywordStyle } from 'src/shared';
 import { get, writable } from 'svelte/store';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface GlobalSettings {
+  // Populated in Phase 3 (case sensitivity, matching options) and Phase 4 (enabled toggle)
+}
+
 export interface PluginSettings {
+  settingsVersion: number;
+  globalSettings: GlobalSettings;
   keywords: KeywordStyle[];
 }
 
 const DEFAULT_SETTINGS: PluginSettings = {
+  settingsVersion: 1,
+  globalSettings: {},
   keywords: [
     {
       keyword: 'TODO',
@@ -48,11 +57,39 @@ export function initStore(pluginInstance: KeywordHighlighterPlugin): void {
   loadStore();
 }
 
+function migrateSettings(data: Record<string, unknown>): Partial<PluginSettings> {
+  // No version field = pre-v2 schema (original plugin format, just keywords)
+  if (!data.settingsVersion) {
+    return {
+      settingsVersion: 1,
+      globalSettings: {},
+      keywords: Array.isArray(data.keywords) ? (data.keywords as KeywordStyle[]) : [],
+    };
+  }
+
+  // Current version — pass through
+  if (data.settingsVersion === 1) {
+    return data as Partial<PluginSettings>;
+  }
+
+  // Unknown/future version — reset to defaults
+  console.warn(`Keyword Highlighter: Unknown settings version ${data.settingsVersion}, resetting to defaults`);
+  return {};
+}
+
 export async function loadStore(): Promise<void> {
   if (!plugin) return;
 
-  const loadedDate = await plugin.loadData();
-  const settings = Object.assign({}, DEFAULT_SETTINGS, loadedDate);
+  const loadedData = await plugin.loadData();
+
+  // Corrupted or missing data — reset to defaults
+  if (!loadedData || typeof loadedData !== 'object' || Array.isArray(loadedData)) {
+    settingsStore.set(DEFAULT_SETTINGS);
+    return;
+  }
+
+  const migrated = migrateSettings(loadedData as Record<string, unknown>);
+  const settings = Object.assign({}, DEFAULT_SETTINGS, migrated);
   settingsStore.set(settings);
 }
 
