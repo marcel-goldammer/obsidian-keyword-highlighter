@@ -4,9 +4,8 @@ import { generateInitialColors } from 'src/settings/generate-initial-colors';
 import type { KeywordStyle } from 'src/shared';
 import { get, writable } from 'svelte/store';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GlobalSettings {
-  // Populated in Phase 3 (case sensitivity, matching options) and Phase 4 (enabled toggle)
+  caseSensitive: boolean;
 }
 
 export interface PluginSettings {
@@ -17,7 +16,9 @@ export interface PluginSettings {
 
 const DEFAULT_SETTINGS: PluginSettings = {
   settingsVersion: 1,
-  globalSettings: {},
+  globalSettings: {
+    caseSensitive: true, // preserve current behavior (case-sensitive matching by default)
+  },
   keywords: [
     {
       keyword: 'TODO',
@@ -62,14 +63,21 @@ function migrateSettings(data: Record<string, unknown>): Partial<PluginSettings>
   if (!data.settingsVersion) {
     return {
       settingsVersion: 1,
-      globalSettings: {},
+      globalSettings: {
+        caseSensitive: true, // backfill for pre-v2 settings (preserve existing behavior)
+      },
       keywords: Array.isArray(data.keywords) ? (data.keywords as KeywordStyle[]) : [],
     };
   }
 
-  // Current version — pass through
+  // Current version — pass through, backfilling any missing fields
   if (data.settingsVersion === 1) {
-    return data as Partial<PluginSettings>;
+    const migrated = data as Partial<PluginSettings>;
+    // Backfill caseSensitive for v1 settings created before Phase 3
+    if (migrated.globalSettings && migrated.globalSettings.caseSensitive === undefined) {
+      migrated.globalSettings.caseSensitive = true;
+    }
+    return migrated;
   }
 
   // Unknown/future version — reset to defaults
