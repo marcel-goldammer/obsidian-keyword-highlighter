@@ -1,12 +1,32 @@
 import { RegExpCursor, SearchCursor } from '@codemirror/search';
-import { RangeSetBuilder } from '@codemirror/state';
+import { RangeSetBuilder, type Text } from '@codemirror/state';
 import { Decoration, type DecorationSet, EditorView, type PluginValue, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { highlightMark } from 'src/editor-extension';
-import { type KeywordStyle, resolveKeyword } from 'src/shared';
+import { type KeywordStyle, type ResolvedKeyword, resolveKeyword } from 'src/shared';
 import { settingsStore } from 'src/stores/settings-store';
 import { get } from 'svelte/store';
 
 type NewDecoration = { from: number; to: number; decoration: Decoration };
+
+function* findEditorMatches(doc: Text, resolved: ResolvedKeyword, caseSensitive: boolean): Generator<{ from: number; to: number }> {
+  if (resolved.type === 'regex') {
+    const cursor = new RegExpCursor(doc, resolved.pattern);
+    cursor.next();
+    while (!cursor.done) {
+      yield { from: cursor.value.from, to: cursor.value.to };
+      cursor.next();
+    }
+  } else {
+    const cursor = caseSensitive
+      ? new SearchCursor(doc, resolved.text)
+      : new SearchCursor(doc, resolved.text, 0, doc.length, (s: string) => s.toLowerCase());
+    cursor.next();
+    while (!cursor.done) {
+      yield { from: cursor.value.from, to: cursor.value.to };
+      cursor.next();
+    }
+  }
+}
 
 export class EditorHighlighter implements PluginValue {
   decorations: DecorationSet;
@@ -55,40 +75,14 @@ export class EditorHighlighter implements PluginValue {
   }
 
   buildDecorationsForKeyword(view: EditorView, keyword: KeywordStyle, caseSensitive: boolean): NewDecoration[] {
-    const newDecorations: NewDecoration[] = [];
-
     const resolved = resolveKeyword(keyword.keyword, caseSensitive);
-    if (!resolved) {
-      return newDecorations;
-    }
+    if (!resolved) return [];
 
-    if (resolved.type === 'regex') {
-      const cursor = new RegExpCursor(view.state.doc, resolved.pattern);
-      cursor.next();
-      while (!cursor.done) {
-        newDecorations.push({
-          from: cursor.value.from,
-          to: cursor.value.to,
-          decoration: highlightMark(keyword),
-        });
-        cursor.next();
-      }
-    } else {
-      const cursor = caseSensitive
-        ? new SearchCursor(view.state.doc, resolved.text)
-        : new SearchCursor(view.state.doc, resolved.text, 0, view.state.doc.length, (s: string) => s.toLowerCase());
-      cursor.next();
-      while (!cursor.done) {
-        newDecorations.push({
-          from: cursor.value.from,
-          to: cursor.value.to,
-          decoration: highlightMark(keyword),
-        });
-        cursor.next();
-      }
-    }
-
-    return newDecorations;
+    return Array.from(findEditorMatches(view.state.doc, resolved, caseSensitive), ({ from, to }) => ({
+      from,
+      to,
+      decoration: highlightMark(keyword),
+    }));
   }
 }
 

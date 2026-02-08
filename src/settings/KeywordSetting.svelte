@@ -43,16 +43,16 @@
 
 <div class="setting-item">
   <div class="setting-item-info">
-    <div class="setting-item-name">{`Keyword #${index}`}</div>
-    <div class="setting-item-description">Enter a keyword, font modifiers, a font color and a background color</div>
-  </div>
-  <div class="setting-item-control">
-    <div class="kh-keyword-input-wrapper">
-      <input type="text" spellcheck="false" bind:value={keyword.keyword} on:change={updateKeyword} />
+    <div class="setting-item-name">
+      {`Keyword #${index}`}
       {#if isRegex}
         <span class="kh-regex-badge" title="Regular expression pattern">.*</span>
       {/if}
     </div>
+    <div class="setting-item-description">Enter a keyword, font modifiers, a font color and a background color</div>
+  </div>
+  <div class="setting-item-control">
+    <input type="text" spellcheck="false" bind:value={keyword.keyword} on:change={updateKeyword} />
     <ToggleButtonGroup
       options={toggleButtonOptions}
       state={keyword.fontModifiers ?? []}
@@ -86,12 +86,6 @@
 <style>
   .setting-item-control {
     flex-shrink: 0;
-  }
-
-  .kh-keyword-input-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
   }
 
   .kh-regex-badge {
