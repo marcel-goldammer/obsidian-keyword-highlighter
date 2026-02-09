@@ -4,9 +4,8 @@ import { generateInitialColors } from 'src/settings/generate-initial-colors';
 import type { KeywordStyle } from 'src/shared';
 import { get, writable } from 'svelte/store';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GlobalSettings {
-  // Populated in Phase 3 (case sensitivity, matching options) and Phase 4 (enabled toggle)
+  caseSensitive: boolean;
 }
 
 export interface PluginSettings {
@@ -17,7 +16,9 @@ export interface PluginSettings {
 
 const DEFAULT_SETTINGS: PluginSettings = {
   settingsVersion: 1,
-  globalSettings: {},
+  globalSettings: {
+    caseSensitive: true, // preserve current behavior (case-sensitive matching by default)
+  },
   keywords: [
     {
       keyword: 'TODO',
@@ -57,26 +58,6 @@ export function initStore(pluginInstance: KeywordHighlighterPlugin): void {
   loadStore();
 }
 
-function migrateSettings(data: Record<string, unknown>): Partial<PluginSettings> {
-  // No version field = pre-v2 schema (original plugin format, just keywords)
-  if (!data.settingsVersion) {
-    return {
-      settingsVersion: 1,
-      globalSettings: {},
-      keywords: Array.isArray(data.keywords) ? (data.keywords as KeywordStyle[]) : [],
-    };
-  }
-
-  // Current version — pass through
-  if (data.settingsVersion === 1) {
-    return data as Partial<PluginSettings>;
-  }
-
-  // Unknown/future version — reset to defaults
-  console.warn(`Keyword Highlighter: Unknown settings version ${data.settingsVersion}, resetting to defaults`);
-  return {};
-}
-
 export async function loadStore(): Promise<void> {
   if (!plugin) return;
 
@@ -88,8 +69,7 @@ export async function loadStore(): Promise<void> {
     return;
   }
 
-  const migrated = migrateSettings(loadedData as Record<string, unknown>);
-  const settings = Object.assign({}, DEFAULT_SETTINGS, migrated);
+  const settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
   settingsStore.set(settings);
 }
 
