@@ -58,33 +58,6 @@ export function initStore(pluginInstance: KeywordHighlighterPlugin): void {
   loadStore();
 }
 
-function migrateSettings(data: Record<string, unknown>): Partial<PluginSettings> {
-  // No version field = pre-v2 schema (original plugin format, just keywords)
-  if (!data.settingsVersion) {
-    return {
-      settingsVersion: 1,
-      globalSettings: {
-        caseSensitive: true, // backfill for pre-v2 settings (preserve existing behavior)
-      },
-      keywords: Array.isArray(data.keywords) ? (data.keywords as KeywordStyle[]) : [],
-    };
-  }
-
-  // Current version — pass through, backfilling any missing fields
-  if (data.settingsVersion === 1) {
-    const migrated = data as Partial<PluginSettings>;
-    // Backfill caseSensitive for v1 settings created before Phase 3
-    if (migrated.globalSettings && migrated.globalSettings.caseSensitive === undefined) {
-      migrated.globalSettings.caseSensitive = true;
-    }
-    return migrated;
-  }
-
-  // Unknown/future version — reset to defaults
-  console.warn(`Keyword Highlighter: Unknown settings version ${data.settingsVersion}, resetting to defaults`);
-  return {};
-}
-
 export async function loadStore(): Promise<void> {
   if (!plugin) return;
 
@@ -96,8 +69,7 @@ export async function loadStore(): Promise<void> {
     return;
   }
 
-  const migrated = migrateSettings(loadedData as Record<string, unknown>);
-  const settings = Object.assign({}, DEFAULT_SETTINGS, migrated);
+  const settings = Object.assign({}, DEFAULT_SETTINGS, loadedData);
   settingsStore.set(settings);
 }
 
